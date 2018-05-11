@@ -4,10 +4,10 @@ Vanitygen PLUS with Cryply(CRP) support.
 # Compilation 
  make all
 
-#Usage: 
+# Usage: 
 [ocl]vanitygen -i -v -C CRP CRYPLY
 
-#Output
+# Output
 Generating Cryply Address
 Prefix difficulty:             33013028 CRYPLY
 Difficulty: 33013028
@@ -19,7 +19,7 @@ Privkey (ASN1): 3082011302010104206e776ab8b9ec0b6dfa68757077c50a23e64307457da7cf
 CRP Address: CRypLY1qCRDDaEWhpuj1YbNr1hWvHwK5mm
 CRP Privkey: 58wDR9nZPWNNw68BGcz346Goj3Kj2fcwQpKq1DxV7Cjecs9sjCA <--- This is your Private Key
 
-#Import
+# Import into console wallet.dat
 ./cryplyd importprivkey "58wDR9nZPWNNw68BGcz346Goj3Kj2fcwQpKq1DxV7Cjecs9sjCA" "yourlabel"
 
 Try to send small transaction to check if everything working fine.
