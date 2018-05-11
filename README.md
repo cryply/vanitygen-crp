@@ -7,7 +7,7 @@ Vanitygen PLUS with Cryply(CRP) support.
 # Usage: 
 [ocl]vanitygen [-i -v] -C CRP {PREFIX}
 
-#Example:
+# Example:
 #vanitygen -i -v -C CRP CRyply
 
 # Output
