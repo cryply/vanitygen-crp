@@ -27,5 +27,13 @@ CRP Privkey: 58wDR9nZPWNNw68BGcz346Goj3Kj2fcwQpKq1DxV7Cjecs9sjCA <--- This is yo
 
 Try to send small transaction to check if everything working fine.
 
-Warning: Try this on empty wallet - we are not responsible for destroying your wallets!!!
+# Warning: 
+Try this on empty wallet - we are not responsible for destroying your wallets!!!
+
+# Donation
+Support Cryply!
+CRP: CRYPLYzcKxrwKSboP3z1qb5YoA6bL4xf1Z
+
+
+
 
