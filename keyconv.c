@@ -110,7 +110,7 @@ main(int argc, char **argv)
 					"CNOTE : C-Note : C\n"
 					"CON : PayCon : P\n"
 					"CRW : Crown : 1\n"
-					"CRP : Cryply : C\n"
+					"CRP : CranePay : C\n"
 					"DASH : Dash : X\n"
 					"DEEPONION : DeepOnion : D\n"
 					"DNR: Denarius: D\n"
@@ -1031,7 +1031,7 @@ main(int argc, char **argv)
 			else
 			if (strcmp(optarg, "CRP")== 0) {
 				fprintf(stderr,
-					"Generating Cryply Address\n");
+					"Generating CranePay Address\n");
 					addrtype = 28;
 					privtype = 123;
 					break;
@@ -1152,7 +1152,7 @@ main(int argc, char **argv)
 
 	if (key2_in) {
 		BN_CTX *bnctx;
-		BIGNUM bntmp, bntmp2;
+		BIGNUM *bntmp, *bntmp2;
 		EC_KEY *pkey2;
 
 		pkey2 = EC_KEY_new_by_curve_name(NID_secp256k1);
@@ -1174,19 +1174,19 @@ main(int argc, char **argv)
 			compressed = 1;
 		}
 
-		BN_init(&bntmp);
-		BN_init(&bntmp2);
+		bntmp = BN_new();
+		bntmp2 = BN_new();
 		bnctx = BN_CTX_new();
-		EC_GROUP_get_order(EC_KEY_get0_group(pkey), &bntmp2, NULL);
-		BN_mod_add(&bntmp,
+		EC_GROUP_get_order(EC_KEY_get0_group(pkey), bntmp2, NULL);
+		BN_mod_add(bntmp,
 			   EC_KEY_get0_private_key(pkey),
 			   EC_KEY_get0_private_key(pkey2),
-			   &bntmp2,
+			   bntmp2,
 			   bnctx);
-		vg_set_privkey(&bntmp, pkey);
+		vg_set_privkey(bntmp, pkey);
 		EC_KEY_free(pkey2);
-		BN_clear_free(&bntmp);
-		BN_clear_free(&bntmp2);
+		BN_clear_free(bntmp);
+		BN_clear_free(bntmp2);
 		BN_CTX_free(bnctx);
 	}
 

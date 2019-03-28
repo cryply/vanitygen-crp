@@ -205,7 +205,7 @@ main(int argc, char **argv)
 					"CNOTE : C-Note : C\n"
 					"CON : PayCon : P\n"
 					"CRW : Crown : 1\n"
-					"CRP : Cryply : C\n"
+					"CRP : CranePay : C\n"
 					"DASH : Dash : X\n"
 					"DEEPONION : DeepOnion : D\n"
 					"DNR: Denarius: D\n"
@@ -1117,7 +1117,7 @@ main(int argc, char **argv)
 			else
 			if (strcmp(optarg, "CRP")== 0) {
 				fprintf(stderr,
-					"Generating Cryply Address\n");
+					"Generating CranePay Address\n");
 					addrtype = 28;
 					privtype = 123;
 					break;

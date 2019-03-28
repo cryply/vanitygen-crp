@@ -1,3 +1,4 @@
+
 /*
  * Vanitygen, vanity bitcoin address generator
  * Copyright (C) 2011 <samr7@cs.washington.edu>
@@ -36,6 +37,7 @@
 char ticker[10];
 
 int GRSFlag = 0;
+
 
 const char *version = VANITYGEN_VERSION;
 
@@ -94,8 +96,8 @@ vg_thread_loop(void *arg)
 		exit(1);
 	}
 
-	BN_set_word(&vxcp->vxc_bntmp, ptarraysize);
-	EC_POINT_mul(pgroup, pbatchinc, &vxcp->vxc_bntmp, NULL, NULL,
+	BN_set_word(vxcp->vxc_bntmp, ptarraysize);
+	EC_POINT_mul(pgroup, pbatchinc, vxcp->vxc_bntmp, NULL, NULL,
 		     vxcp->vxc_bnctx);
 	EC_POINT_make_affine(pgroup, pbatchinc, vxcp->vxc_bnctx);
 
@@ -129,7 +131,19 @@ vg_thread_loop(void *arg)
 			EC_KEY_generate_key(pkey);
 			if (vcp->vc_privkey_prefix_length > 0) {
 				BIGNUM *pkbn = BN_dup(EC_KEY_get0_private_key(pkey));
-				memcpy((char *)pkbn->d + 32 - vcp->vc_privkey_prefix_length, vcp->vc_privkey_prefix, vcp->vc_privkey_prefix_length);
+				
+				//memcpy((char *)pkbn->d + 32 - vcp->vc_privkey_prefix_length, vcp->vc_privkey_prefix, vcp->vc_privkey_prefix_length);
+
+        unsigned char pkey_arr[32];
+        assert(BN_bn2bin(pkbn, pkey_arr) < 33);
+        memcpy((char *) pkey_arr, vcp->vc_privkey_prefix, vcp->vc_privkey_prefix_length);
+				for (int i = 0; i < vcp->vc_privkey_prefix_length / 2; i++) {
+					int k = pkey_arr[i];
+					pkey_arr[i] = pkey_arr[vcp->vc_privkey_prefix_length - 1 - i];
+					pkey_arr[vcp->vc_privkey_prefix_length - 1 - i] = k;
+				}
+        BN_bin2bn(pkey_arr, 32, pkbn);
+
 				EC_KEY_set_private_key(pkey, pkbn);
 
 				EC_POINT *origin = EC_POINT_new(pgroup);
@@ -139,13 +153,13 @@ vg_thread_loop(void *arg)
 			npoints = 0;
 
 			/* Determine rekey interval */
-			EC_GROUP_get_order(pgroup, &vxcp->vxc_bntmp,
+			EC_GROUP_get_order(pgroup, vxcp->vxc_bntmp,
 					   vxcp->vxc_bnctx);
-			BN_sub(&vxcp->vxc_bntmp2,
-			       &vxcp->vxc_bntmp,
+			BN_sub(vxcp->vxc_bntmp2,
+			       vxcp->vxc_bntmp,
 			       EC_KEY_get0_private_key(pkey));
-			rekey_at = BN_get_word(&vxcp->vxc_bntmp2);
-			if ((rekey_at == BN_MASK2) || (rekey_at > rekey_max))
+			rekey_at = BN_get_word(vxcp->vxc_bntmp2);
+			if ((rekey_at == 0xffffffffL) || (rekey_at > rekey_max))
 				rekey_at = rekey_max;
 			assert(rekey_at > 0);
 
@@ -459,7 +473,7 @@ main(int argc, char **argv)
 					"CNOTE : C-Note : C\n"
 					"CON : PayCon : P\n"
 					"CRW : Crown : 1\n"
-					"CRP : Cryply : C\n"
+					"CRP : CranePay : C\n"
 					"DASH : Dash : X\n"
 					"DEEPONION : DeepOnion : D\n"
 					"DNR: Denarius: D\n"
@@ -1382,7 +1396,7 @@ main(int argc, char **argv)
 			else
 			if (strcmp(optarg, "CRP")== 0) {
 				fprintf(stderr,
-					"Generating Cryply Address\n");
+					"Generating CranePay Address\n");
 					addrtype = 28;
 					privtype = 123;
 					break;
